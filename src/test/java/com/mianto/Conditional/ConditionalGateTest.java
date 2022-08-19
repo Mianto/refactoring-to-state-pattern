@@ -1,4 +1,4 @@
-package com.minato.Conditional;
+package com.mianto.Conditional;
 
 import com.mianto.Conditional.ConditionalGate;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,12 +85,14 @@ public class ConditionalGateTest {
         gate.payFail();
         assertEquals(gate.getState(), 1);
     }
+
     @Test
     public void testPayFailWhenGateIsClose() {
         gate.setState(1);
         gate.payFail();
         assertEquals(gate.getState(), 1);
     }
+
     @Test
     public void testPayFailWhenGateIsOpen() {
         gate.setState(1);
