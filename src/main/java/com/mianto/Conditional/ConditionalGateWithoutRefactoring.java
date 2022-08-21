@@ -1,6 +1,6 @@
 package com.mianto.Conditional;
 
-public class ConditionalGate {
+public class ConditionalGateWithoutRefactoring {
     /**
      *                          Enter       PayOK       PayFail     PayInitiated
      *     Open-State           Close       Open        Open        Open
@@ -14,13 +14,14 @@ public class ConditionalGate {
     private final static String unreachableStep = "THIS STEP IS UNREACHABLE";
 
 
-    public ConditionalGate(int CURRENT_STATE) {
+    public ConditionalGateWithoutRefactoring(int CURRENT_STATE) {
         this.CURRENT_STATE = CURRENT_STATE;
     }
 
     public void enter() {
         if (CURRENT_STATE == OPEN_STATE) {
-            enterForOpenState();
+            System.out.println("Individual has enter the gate, closing gate");
+            CURRENT_STATE = CLOSE_STATE;
         } else if (CURRENT_STATE == CLOSE_STATE) {
             System.out.println("Please pay to open the gate");
         } else if (CURRENT_STATE == PROCESSING_STATE) {
@@ -28,31 +29,13 @@ public class ConditionalGate {
         }
     }
 
-    private void enterForOpenState() {
-        System.out.println("Individual has enter the gate, closing gate");
-        CURRENT_STATE = CLOSE_STATE;
-    }
-
-    private void payOkForOpenState() {
-        System.out.println(unreachableStep);
-        throw new IllegalCallerException(unreachableStep);
-    }
-
-    private void payFailForOpenState() {
-        System.out.println(unreachableStep);
-        throw new IllegalCallerException(unreachableStep);
-    }
-
-    private void payInitiatedForOpenState() {
-        System.out.println("Payment is already processed");
-    }
-
     public void payOK() {
         if (CURRENT_STATE == PROCESSING_STATE) {
             System.out.println("Payment OK found now opening the gate");
             CURRENT_STATE = OPEN_STATE;
         } else if (CURRENT_STATE == OPEN_STATE) {
-            payOkForOpenState();
+            System.out.println(unreachableStep);
+            throw new IllegalCallerException(unreachableStep);
         } else if (CURRENT_STATE == CLOSE_STATE) {
             System.out.println("Previous Customer payment has been processed to be OK after timeout");
             System.out.println("Previous Customer needs to be refunded");
@@ -64,7 +47,8 @@ public class ConditionalGate {
             System.out.println("Payment failed, moving back to close state");
             CURRENT_STATE = CLOSE_STATE;
         } else if (CURRENT_STATE == OPEN_STATE) {
-            payOkForOpenState();
+            System.out.println(unreachableStep);
+            throw new IllegalCallerException(unreachableStep);
         } else if (CURRENT_STATE == CLOSE_STATE) {
             System.out.println("Previous Customer payment has been processed to be Failed after timeout");
             System.out.println("No need for refunding");
@@ -76,7 +60,7 @@ public class ConditionalGate {
             System.out.println("Payment initiated, now processing the payment");
             CURRENT_STATE = PROCESSING_STATE;
         } else if (CURRENT_STATE == OPEN_STATE) {
-            payInitiatedForOpenState();
+            System.out.println("Payment is already processed");
         } else if (CURRENT_STATE == PROCESSING_STATE) {
             System.out.println("Payment is in processing state, please wait...");
         }

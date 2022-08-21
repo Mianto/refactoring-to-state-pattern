@@ -28,11 +28,12 @@ public class OpenState implements GateState {
 
     @Override
     public void payFail() {
-
+        System.out.println(unreachableStep);
+        throw new IllegalCallerException(unreachableStep);
     }
 
     @Override
     public void payInitiated() {
-
+        System.out.println("Payment is already processed");
     }
 }
